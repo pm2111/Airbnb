@@ -89,28 +89,61 @@ print("R-squared of model is:",rsquared_score)
 
 #Extract the coefficients of the linear model
 coeff_df = pd.Series(lm_model.coef_.ravel(), index=X.columns)
-print(coeff_df)
+
+#Plot the coefficients from the Linear Model
+coeff_df.plot.bar(figsize=[15,30],fontsize=7)
+plt.xlabel("Model variables")
+plt.ylabel("Model weights")
+#plt.show()
+
+#Plot the price range for Seattle
+df.price.hist(bins=100)
+plt.xlabel("Price per night in $")
+plt.ylabel("Number of properties in Seattle")
+#plt.show()
+
+#Plot the price range per neighborhood
+price_neighbourhood = df.groupby(['neighbourhood_group_cleansed']).agg({'price':'mean'})
+print(price_neighbourhood.head())
+price_neighbourhood_sorted=price_neighbourhood.sort_values(by=['price']) #arange from min to max
+price_neighbourhood_sorted.plot.bar(grid=True)
+plt.ylabel('Price in $')
+plt.xlabel('Neighbourhood name')
+plt.tight_layout()
+#plt.show()
+plt.close()
+#Plot the number of properties per neighbourhood
+nr_in_neighbourhood = df.groupby(['neighbourhood_group_cleansed']).sum()
+nr_in_neighbourhood["host_listings_count"].plot.bar(legend=None,fontsize=10)
+plt.xlabel('Neighbourhood name')
+plt.ylabel('Number of Properties per Neighbourhood')
+plt.show()
 
 
-# graphs
-
-
-df.price.hist(bins=50)
-df.neighbourhood_group_cleansed.hist(bins=1000, fontsize=5)
-price_neighbourhood = df.groupby(['neighbourhood_group_cleansed']).agg({'price':'mean'}).reset_index()
-plt.scatter(price_neighbourhood['neighbourhood_group_cleansed'], price_neighbourhood['price'])
 
 
 
-# actial labels
 
-plt.bar(price_neighbourhood['neighbourhood_group_cleansed'], price_neighbourhood['price'])
 
-price_neighbourhood.plot.bar(rot=40,figsize=[15,10],fontsize=5)
 
-plt.hexbin(y_test.values, y_test_preds, bins='log')
 
-# regression plot
 
-plt.hist(y_test.values - y_test_preds, bins=50)
-np.std(y_test.values - y_test_preds)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
